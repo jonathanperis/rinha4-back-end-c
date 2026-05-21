@@ -1,0 +1,53 @@
+{
+  "event_name": "workflow_dispatch",
+  "head_sha": "16eb980fa4dcb216a77f88c5cd493ed9b37dc4a9",
+  "results": [
+    {
+      "artifact": "rinha-benchmark-jonathan-c-lb-136",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.30ms",
+      "participant": "jonathan-c-lb"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-c-lb-map-136",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.33ms",
+      "participant": "jonathan-c-lb-map"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-c-lb-mlock-136",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.30ms",
+      "participant": "jonathan-c-lb-mlock"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-c-lb-rs-allowed-136",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.37ms",
+      "participant": "jonathan-c-lb-rs-allowed"
+    },
+    {
+      "artifact": "rinha-benchmark-ronieneubauer-rinha2026-136",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.31ms",
+      "participant": "ronieneubauer-rinha2026"
+    }
+  ],
+  "run_id": "26005743371",
+  "run_number": "136"
+}

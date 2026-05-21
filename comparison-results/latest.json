@@ -1,0 +1,26 @@
+{
+  "event_name": "push",
+  "head_sha": "f2633742ca8f78fbd7d415e5a8db1fd25c8ca64f",
+  "results": [
+    {
+      "artifact": "rinha-benchmark-jonathan-latest-155",
+      "false_negative_detections": 7,
+      "false_positive_detections": 41,
+      "final_score": 5400.67,
+      "http_errors": 0,
+      "p99": "0.36ms",
+      "participant": "jonathan-latest"
+    },
+    {
+      "artifact": "rinha-benchmark-ronieneubauer-rinha2026-155",
+      "false_negative_detections": 4,
+      "false_positive_detections": 0,
+      "final_score": 5665.82,
+      "http_errors": 0,
+      "p99": "0.63ms",
+      "participant": "ronieneubauer-rinha2026"
+    }
+  ],
+  "run_id": "26237147574",
+  "run_number": "155"
+}

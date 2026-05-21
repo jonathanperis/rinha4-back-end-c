@@ -1,0 +1,26 @@
+{
+  "event_name": "workflow_dispatch",
+  "head_sha": "8de89f2b67f884388c04ee5a4659b2d4a6e4e495",
+  "results": [
+    {
+      "artifact": "benchmark-results-jonathan-old-image-new-split-rt",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.30ms",
+      "participant": "jonathan-old-image-new-split-rt"
+    },
+    {
+      "artifact": "benchmark-results-jonathan-old-official-revert",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.29ms",
+      "participant": "jonathan-old-official-revert"
+    }
+  ],
+  "run_id": "26105373928",
+  "run_number": "143"
+}

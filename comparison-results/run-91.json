@@ -1,0 +1,35 @@
+{
+  "event_name": "push",
+  "head_sha": "1dba6a7e2644217beabb68b41b01b160101d2317",
+  "results": [
+    {
+      "artifact": "rinha-benchmark-jonathanperis-91",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.38ms",
+      "participant": "jonathanperis"
+    },
+    {
+      "artifact": "rinha-benchmark-macedot-91",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.33ms",
+      "participant": "macedot"
+    },
+    {
+      "artifact": "rinha-benchmark-rafaelcoelhox-91",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.31ms",
+      "participant": "rafaelcoelhox"
+    }
+  ],
+  "run_id": "25952345783",
+  "run_number": "91"
+}

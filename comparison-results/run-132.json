@@ -1,0 +1,62 @@
+{
+  "event_name": "workflow_dispatch",
+  "head_sha": "beae7807b5564e413c4b7a9cd9c13754a7506f99",
+  "results": [
+    {
+      "artifact": "rinha-benchmark-jonathan-asm-lb-rs-132",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.43ms",
+      "participant": "jonathan-asm-lb-rs"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-asm-lb-rtmlock-132",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.41ms",
+      "participant": "jonathan-asm-lb-rtmlock"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-c-lb-132",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.40ms",
+      "participant": "jonathan-c-lb"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-c-lb-rs-132",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.38ms",
+      "participant": "jonathan-c-lb-rs"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-c-lb-rtmlock-132",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.37ms",
+      "participant": "jonathan-c-lb-rtmlock"
+    },
+    {
+      "artifact": "rinha-benchmark-ronieneubauer-rinha2026-132",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.30ms",
+      "participant": "ronieneubauer-rinha2026"
+    }
+  ],
+  "run_id": "26003078305",
+  "run_number": "132"
+}

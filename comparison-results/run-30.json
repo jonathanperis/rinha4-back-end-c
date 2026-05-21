@@ -1,0 +1,62 @@
+{
+  "event_name": "push",
+  "head_sha": "b6c633ab72f17d7305cc9097469757129f23a769",
+  "results": [
+    {
+      "artifact": "rinha-benchmark-hvini-30",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.37ms",
+      "participant": "hvini"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathanperis-30",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.36ms",
+      "participant": "jonathanperis"
+    },
+    {
+      "artifact": "rinha-benchmark-luan-latest-30",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.31ms",
+      "participant": "luan-latest"
+    },
+    {
+      "artifact": "rinha-benchmark-macedot-30",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.33ms",
+      "participant": "macedot"
+    },
+    {
+      "artifact": "rinha-benchmark-silent-index-30",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.31ms",
+      "participant": "silent-index"
+    },
+    {
+      "artifact": "rinha-benchmark-steixeira93-30",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.39ms",
+      "participant": "steixeira93"
+    }
+  ],
+  "run_id": "25867019543",
+  "run_number": "30"
+}

@@ -1,0 +1,53 @@
+{
+  "event_name": "workflow_dispatch",
+  "head_sha": "6973595e3cdc9e8f660e33789a5c96d1bbd9c9fb",
+  "results": [
+    {
+      "artifact": "benchmark-results-jonathan-new-image-old-split",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.31ms",
+      "participant": "jonathan-new-image-old-split"
+    },
+    {
+      "artifact": "benchmark-results-jonathan-new-official-current",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.28ms",
+      "participant": "jonathan-new-official-current"
+    },
+    {
+      "artifact": "benchmark-results-jonathan-old-image-new-split-rt",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.31ms",
+      "participant": "jonathan-old-image-new-split-rt"
+    },
+    {
+      "artifact": "benchmark-results-jonathan-old-official-revert",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.34ms",
+      "participant": "jonathan-old-official-revert"
+    },
+    {
+      "artifact": "benchmark-results-ronieneubauer-rinha2026",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.37ms",
+      "participant": "ronieneubauer-rinha2026"
+    }
+  ],
+  "run_id": "26106820789",
+  "run_number": "144"
+}

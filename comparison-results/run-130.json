@@ -1,0 +1,44 @@
+{
+  "event_name": "workflow_dispatch",
+  "head_sha": "4539a3cb84d38443c618c989e0bf9f965c77d5e6",
+  "results": [
+    {
+      "artifact": "rinha-benchmark-jonathan-asm-lb-130",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.30ms",
+      "participant": "jonathan-asm-lb"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-c-lb-130",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.30ms",
+      "participant": "jonathan-c-lb"
+    },
+    {
+      "artifact": "rinha-benchmark-mxlange-c-api-130",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.22ms",
+      "participant": "mxlange-c-api"
+    },
+    {
+      "artifact": "rinha-benchmark-ronieneubauer-rinha2026-130",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.30ms",
+      "participant": "ronieneubauer-rinha2026"
+    }
+  ],
+  "run_id": "26000726773",
+  "run_number": "130"
+}

@@ -1,0 +1,161 @@
+{
+  "event_name": "push",
+  "head_sha": "c3325753412d527a8cd92b239fa8451f82e4d4c9",
+  "results": [
+    {
+      "artifact": "rinha-benchmark-jonathan-2ada-base-119",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.33ms",
+      "participant": "jonathan-2ada-base"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-2ada-early180-119",
+      "false_negative_detections": 11,
+      "false_positive_detections": 8,
+      "final_score": 5513.03,
+      "http_errors": 0,
+      "p99": "0.35ms",
+      "participant": "jonathan-2ada-early180"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-2ada-early220-119",
+      "false_negative_detections": 119,
+      "false_positive_detections": 129,
+      "final_score": 4239.97,
+      "http_errors": 0,
+      "p99": "0.37ms",
+      "participant": "jonathan-2ada-early220"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-2ada-early300-119",
+      "false_negative_detections": 292,
+      "false_positive_detections": 314,
+      "final_score": 3734.55,
+      "http_errors": 0,
+      "p99": "0.30ms",
+      "participant": "jonathan-2ada-early300"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-82a-kd-119",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.34ms",
+      "participant": "jonathan-82a-kd"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-a985-base-119",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.32ms",
+      "participant": "jonathan-a985-base"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-a985-lb020-nowarm-119",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.39ms",
+      "participant": "jonathan-a985-lb020-nowarm"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-a985-nowarm-119",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.32ms",
+      "participant": "jonathan-a985-nowarm"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-a985-pop-nowarm-119",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.31ms",
+      "participant": "jonathan-a985-pop-nowarm"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-a985-rt-mem-119",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.39ms",
+      "participant": "jonathan-a985-rt-mem"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-control-119",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.36ms",
+      "participant": "jonathan-control"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-exact-119",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.34ms",
+      "participant": "jonathan-exact"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-exact-mxlange-split-119",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.33ms",
+      "participant": "jonathan-exact-mxlange-split"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-mxlange-projection-119",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.32ms",
+      "participant": "jonathan-mxlange-projection"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-mxlange-projection-exact-119",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.34ms",
+      "participant": "jonathan-mxlange-projection-exact"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-mxlange-split-119",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.33ms",
+      "participant": "jonathan-mxlange-split"
+    },
+    {
+      "artifact": "rinha-benchmark-mxlange-c-api-119",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.31ms",
+      "participant": "mxlange-c-api"
+    }
+  ],
+  "run_id": "25994660534",
+  "run_number": "119"
+}

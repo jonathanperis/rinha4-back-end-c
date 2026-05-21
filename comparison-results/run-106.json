@@ -1,0 +1,44 @@
+{
+  "event_name": "workflow_dispatch",
+  "head_sha": "98bf0cd8b5ce9d4f6425e9cfbb34a39d3ed4756a",
+  "results": [
+    {
+      "artifact": "rinha-benchmark-jonathan-control-106",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.34ms",
+      "participant": "jonathan-control"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-exact-106",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.32ms",
+      "participant": "jonathan-exact"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-exact-mxlange-split-106",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.35ms",
+      "participant": "jonathan-exact-mxlange-split"
+    },
+    {
+      "artifact": "rinha-benchmark-jonathan-mxlange-split-106",
+      "false_negative_detections": 0,
+      "false_positive_detections": 0,
+      "final_score": 6000,
+      "http_errors": 0,
+      "p99": "0.35ms",
+      "participant": "jonathan-mxlange-split"
+    }
+  ],
+  "run_id": "25980856209",
+  "run_number": "106"
+}

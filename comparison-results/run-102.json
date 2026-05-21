@@ -1,0 +1,17 @@
+{
+  "event_name": "workflow_dispatch",
+  "head_sha": "877b15dfe90fd3a0ba85a52cf21d826e383995ab",
+  "results": [
+    {
+      "artifact": "artifacts",
+      "false_negative_detections": 0,
+      "false_positive_detections": 2,
+      "final_score": 5856.86,
+      "http_errors": 0,
+      "p99": "0.39ms",
+      "participant": "artifacts"
+    }
+  ],
+  "run_id": "25969611462",
+  "run_number": "102"
+}
