@@ -1,0 +1,113 @@
+services:
+  lb:
+    image: "ghcr.io/jonathanperis/rinha4-lb-yolo-mode:c-ci-0e7bbceed1eb8142dca5f83a449840381b30a785"
+    platform: linux/amd64
+    pull_policy: always
+    user: root
+    environment:
+      LB_MODE: "fdpass"
+      LB_FDPASS_SOCKET_TYPE: "seqpacket"
+      LB_FDPASS_SNDBUF: "262144"
+      PORT: "9999"
+      UPSTREAMS: "/run/rinha/api1.sock,/run/rinha/api2.sock"
+      BACKLOG: "65535"
+    ports:
+      - "9999:9999"
+    depends_on:
+      - api1
+      - api2
+    volumes:
+      - sockets:/run/rinha
+    networks:
+      - rinha
+    logging:
+      driver: "none"
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    deploy:
+      resources:
+        limits:
+          cpus: "0.08"
+          memory: "30M"
+
+  api1:
+    image: "ghcr.io/jonathanperis/rinha4-back-end-c:ci-8b0b21d37c848eb4fa2bf5770f0ecdfaed1926c8"
+    platform: linux/amd64
+    pull_policy: always
+    command: ["/app/api"]
+    user: root
+    environment:
+      API_FD_SOCK: "/run/rinha/api1.sock"
+      INDEX_PATH: "/app/resources/index.bin"
+      API_RT_PRIORITY: "10"
+      API_RT_MODE: "wakeup"
+      API_MLOCKALL: "1"
+      INDEX_MAP_POPULATE: "1"
+      INDEX_MLOCK: "1"
+      MALLOC_ARENA_MAX: "1"
+    volumes:
+      - sockets:/run/rinha
+    networks:
+      - rinha
+    logging:
+      driver: "none"
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+      rtprio: 99
+      memlock: -1
+    deploy:
+      resources:
+        limits:
+          cpus: "0.46"
+          memory: "160M"
+
+  api2:
+    image: "ghcr.io/jonathanperis/rinha4-back-end-c:ci-8b0b21d37c848eb4fa2bf5770f0ecdfaed1926c8"
+    platform: linux/amd64
+    pull_policy: always
+    command: ["/app/api"]
+    user: root
+    environment:
+      API_FD_SOCK: "/run/rinha/api2.sock"
+      INDEX_PATH: "/app/resources/index.bin"
+      API_RT_PRIORITY: "10"
+      API_RT_MODE: "wakeup"
+      API_MLOCKALL: "1"
+      INDEX_MAP_POPULATE: "1"
+      INDEX_MLOCK: "1"
+      MALLOC_ARENA_MAX: "1"
+    volumes:
+      - sockets:/run/rinha
+    networks:
+      - rinha
+    logging:
+      driver: "none"
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+      rtprio: 99
+      memlock: -1
+    deploy:
+      resources:
+        limits:
+          cpus: "0.46"
+          memory: "160M"
+
+networks:
+  rinha:
+    driver: bridge
+
+volumes:
+  sockets:
+    driver: local
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+      o: size=10m
+
+
