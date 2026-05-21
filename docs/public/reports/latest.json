@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "timestamp": "2026-05-21T15:53:12Z",
-    "sha": "5602cfbcd984bcbab33a1ccccc5a77f3c5eaf4ef",
-    "short_sha": "5602cfbcd984",
-    "run_id": "26237150867",
-    "run_url": "https://github.com/jonathanperis/rinha4-back-end-c/actions/runs/26237150867",
-    "image": "ghcr.io/jonathanperis/rinha4-back-end-c:ci-5602cfbcd984bcbab33a1ccccc5a77f3c5eaf4ef",
+    "timestamp": "2026-05-21T23:18:04Z",
+    "sha": "1345ea72031114eb8019395f3cc916a16ea9ed46",
+    "short_sha": "1345ea720311",
+    "run_id": "26258757001",
+    "run_url": "https://github.com/jonathanperis/rinha4-back-end-c/actions/runs/26258757001",
+    "image": "ghcr.io/jonathanperis/rinha4-back-end-c:ci-1345ea72031114eb8019395f3cc916a16ea9ed46",
     "report_kind": "candidate",
     "benchmark_k6_mode": "native",
     "html_report": null
@@ -20,29 +20,29 @@
       "edge_case_count": 645,
       "edge_case_rate": 0.0119
     },
-    "p99": "0.35ms",
+    "p99": "0.16ms",
     "scoring": {
       "breakdown": {
-        "false_positive_detections": 41,
-        "false_negative_detections": 7,
-        "true_positive_detections": 23935,
-        "true_negative_detections": 30075,
+        "false_positive_detections": 0,
+        "false_negative_detections": 0,
+        "true_positive_detections": 23942,
+        "true_negative_detections": 30117,
         "http_errors": 0
       },
-      "failure_rate": "0.09%",
-      "weighted_errors_E": 62,
-      "error_rate_epsilon": 0.001147,
+      "failure_rate": "0%",
+      "weighted_errors_E": 0,
+      "error_rate_epsilon": 0,
       "p99_score": {
         "value": 3000,
         "cut_triggered": false
       },
       "detection_score": {
-        "value": 2400.67,
-        "rate_component": 2940.47,
-        "absolute_penalty": -539.8,
+        "value": 3000,
+        "rate_component": 3000,
+        "absolute_penalty": 0,
         "cut_triggered": false
       },
-      "final_score": 5400.67
+      "final_score": 6000
     }
   }
 }
