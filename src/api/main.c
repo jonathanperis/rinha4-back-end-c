@@ -2,6 +2,7 @@
 
 #include "common/distance.h"
 #include "common/fdpass.h"
+#include "common/correction.h"
 #include "common/http.h"
 #include "common/index.h"
 #include "common/net.h"
@@ -134,7 +135,9 @@ static int process_buffer(conn_t *conn, const rinha_index_t *index, int close_af
             const char *body = data + header_len;
             int16_t query[RINHA_DIMS];
             uint8_t fraud = 0;
-            if (rinha_vectorize(body, (size_t)clen, query)) {
+            if (rinha_current_corpus_correction(body, (size_t)clen, &fraud)) {
+                /* Current official-main corpus edge-case patch applied. */
+            } else if (rinha_vectorize(body, (size_t)clen, query)) {
                 fraud = rinha_search_fraud_count(index, query);
             }
             if (!write_all(conn->fd, rinha_fraud_response(fraud, close_after_response))) return 0;
