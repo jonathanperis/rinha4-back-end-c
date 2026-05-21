@@ -99,7 +99,7 @@ jobs:
           OFFICIAL_REF: ${{ inputs.official_ref || 'main' }}
           K6_IMAGE: ${{ inputs.k6_image || 'grafana/k6:latest' }}
           BENCHMARK_K6_MODE: ${{ inputs.benchmark_k6_mode || 'native' }}
-          WEBAPI_IMAGE: ${{ startsWith(matrix.participant.name, 'jonathan-') && inputs.webapi_image || '' }}
+          WEBAPI_IMAGE: ${{ (startsWith(matrix.participant.name, 'jonathan-') || matrix.participant.name == 'jonathanperis-latest') && inputs.webapi_image || '' }}
           BENCHMARK_REPETITIONS: ${{ inputs.benchmark_repetitions || '1' }}
           RESULTS_DIR: benchmark-results-${{ matrix.participant.name }}
         run: |
@@ -248,7 +248,7 @@ jobs:
             local results_dir="benchmark-results-$name"
             local official_dir="$results_dir/official"
             local participant_webapi_image=""
-            if [[ "$name" == jonathan-* ]]; then
+            if [[ "$name" == jonathan-* || "$name" == "jonathanperis-latest" ]]; then
               participant_webapi_image="$INPUT_WEBAPI_IMAGE"
             fi
             export WEBAPI_IMAGE="$participant_webapi_image"
