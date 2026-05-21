@@ -1,0 +1,227 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import '../../styles/docs.css';
+import { SECTION_CATEGORIES, SECTION_ORDER } from '../../config/sidebar.config';
+
+const SLUG_LABEL: Record<string, string> = {
+  home: 'Docs Hub',
+  architecture: 'Architecture',
+  challenge: 'Challenge',
+  rules: 'Rules',
+  'ci-cd-pipeline': 'CI/CD Pipeline',
+  'getting-started': 'Getting Started',
+  performance: 'Performance',
+};
+
+const PAGE_SUMMARY: Record<string, string> = {
+  challenge: 'Endpoint contract, resource envelope, and scoring pressure.',
+  architecture: 'FD-passing topology, request path, data pipeline, and classifier boundaries.',
+  rules: 'Repository operating rules and promotion constraints.',
+  'getting-started': 'Build, test, Docker smoke, endpoint sample, and docs loop.',
+  performance: 'Hot-path choices, current bottleneck, competitor signals, and search instrumentation.',
+  'ci-cd-pipeline': 'Image build, benchmark archive, report publishing, and Pages deployment.',
+};
+
+const SOURCE_ROWS = [
+  { page: 'Challenge', href: 'challenge/', source: 'docker-compose.yml, official result JSON', note: 'Resource budget and required endpoints.' },
+  { page: 'Architecture', href: 'architecture/', source: 'src/api, src/common, src/preprocess', note: 'Transport, vectorization, index, and response path.' },
+  { page: 'Performance', href: 'performance/', source: 'docs/public/reports, search.c, comparison branch notes', note: 'CI evidence, p99 caveats, and active optimization lane.' },
+  { page: 'CI/CD', href: 'ci-cd-pipeline/', source: '.github/workflows, docs/public/reports', note: 'Immutable images, report kinds, archive semantics.' },
+];
+
+const FAST_PATHS = [
+  { label: 'Contract review', href: 'challenge/', text: 'Start with endpoints, score failure modes, and the 1 CPU / 350 MB envelope.' },
+  { label: 'Hot-path review', href: 'architecture/', text: 'Trace the handoff from port 9999 through Unix control sockets into the C API.' },
+  { label: 'Local loop', href: 'getting-started/', text: 'Build, run tests, launch Compose, hit /ready, and smoke /fraud-score.' },
+  { label: 'Evidence check', href: '../reports/', text: 'Open archived benchmark JSON/HTML before trusting any metric claim.' },
+];
+
+const globResult = import.meta.glob('../../../wiki/*.md', { eager: true });
+
+const pagesBySlug: Record<string, any> = {};
+for (const [path, module] of Object.entries(globResult)) {
+  const fileName = path.split('/').pop()!.replace('.md', '');
+  pagesBySlug[fileName] = module;
+}
+
+const availableSlugs = new Set(Object.keys(pagesBySlug));
+for (const cat of SECTION_CATEGORIES) {
+  for (const id of cat.ids) {
+    if (!availableSlugs.has(id)) {
+      throw new Error(`sidebar id "${id}" has no matching wiki/${id}.md`);
+    }
+  }
+}
+
+const requestedSlug = Astro.params.slug;
+const isRoot = requestedSlug === undefined;
+const requestedKey = requestedSlug ?? 'home';
+const wikiPage = !isRoot ? pagesBySlug[requestedKey] : undefined;
+const Content = wikiPage?.default ?? wikiPage;
+const activeSlug = isRoot ? 'home' : requestedKey;
+const pageTitle = isRoot ? 'rinha4-back-end-c | Docs Hub' : `${SLUG_LABEL[requestedSlug] ?? requestedSlug} | rinha4-back-end-c`;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const docsBase = `${base}/docs`;
+const docsHref = (id: string) => id === 'home' ? `${docsBase}/` : `${docsBase}/${id}/`;
+const orderedDetailSlugs = SECTION_ORDER.filter(s => s !== 'home');
+const currentIndex = orderedDetailSlugs.indexOf(requestedKey as any);
+const prevSlug = currentIndex > 0 ? orderedDetailSlugs[currentIndex - 1] : undefined;
+const nextSlug = currentIndex >= 0 && currentIndex < orderedDetailSlugs.length - 1 ? orderedDetailSlugs[currentIndex + 1] : undefined;
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: undefined } },
+    ...SECTION_ORDER.filter(s => s !== 'home').map(slug => ({ params: { slug } })),
+  ];
+}
+---
+
+<BaseLayout title={pageTitle}>
+  <div class="docs-shell">
+    <div class="mobile-header">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-controls="sidebar" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="repo-title">rinha4.c</div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="repo-title">rinha4.c</div>
+        <p class="repo-description">Pure C fraud scorer. Raw socket HTTP. Official benchmark archive.</p>
+        <input type="text" id="searchInput" class="search-box" placeholder="Filter docs map..." aria-label="Filter docs map" hidden={!isRoot}>
+      </div>
+      <div class="sidebar-nav-container">
+        {SECTION_CATEGORIES.map((cat) => (
+          <div class="sidebar-category-group" data-category>
+            {cat.label && <div class="sidebar-category">{cat.label}</div>}
+            <ul>
+              {cat.ids.map((id) => (
+                <li><a class:list={["nav-item", { active: activeSlug === id }]} href={docsHref(id)} data-nav-id={id}>{SLUG_LABEL[id]}</a></li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <div class="sidebar-footer">
+        <a href={`${base}/`}>Back home</a>
+        <a href={`${base}/reports/`}>Benchmark reports</a>
+        <a href="https://github.com/jonathanperis/rinha4-back-end-c" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </aside>
+
+    <div class="content-wrapper">
+      <main class="content" id="mainContent">
+        {isRoot ? (
+          <section class="docs-hub" aria-labelledby="docs-hub-title">
+            <p class="hub-kicker">DOCS COMMAND CENTER</p>
+            <h1 id="docs-hub-title">Read the C scorer by evidence path, not by scroll depth.</h1>
+            <p class="hub-lede">This hub maps the implementation to the source files and benchmark artifacts behind each claim: fd-passing transport, raw HTTP parsing, 14-dimensional vector scoring, and archived official/CI results.</p>
+
+            <div class="hub-proof-grid" aria-label="Repository proof summary">
+              <div><span>entrypoint</span><strong>:9999</strong><small>standalone yolo FD-pass LB</small></div>
+              <div><span>services</span><strong>2 API + LB</strong><small>root docker-compose.yml</small></div>
+              <div><span>budget</span><strong>1 CPU / 350 MB</strong><small>official resource envelope</small></div>
+              <div><span>evidence</span><strong>reports/</strong><small>candidate and experiment</small></div>
+            </div>
+
+            <h2>Fast paths</h2>
+            <div class="fast-path-grid" data-search-scope>
+              {FAST_PATHS.map((item) => (
+                <a class="fast-path-card" href={item.href} data-search-card>
+                  <span>{item.label}</span>
+                  <p>{item.text}</p>
+                </a>
+              ))}
+            </div>
+
+            <h2>Source-backed map</h2>
+            <div class="docs-map" data-search-scope>
+              {orderedDetailSlugs.map((slug) => (
+                <a class="doc-card" href={`${slug}/`} data-search-card>
+                  <span>{SLUG_LABEL[slug]}</span>
+                  <p>{PAGE_SUMMARY[slug]}</p>
+                </a>
+              ))}
+            </div>
+
+            <div class="source-table-wrap">
+              <table class="source-table">
+                <caption>Where each docs claim should point back to source truth.</caption>
+                <thead><tr><th>Docs area</th><th>Source of truth</th><th>Review note</th></tr></thead>
+                <tbody>
+                  {SOURCE_ROWS.map((row) => (
+                    <tr>
+                      <td><a href={row.href}>{row.page}</a></td>
+                      <td><code>{row.source}</code></td>
+                      <td>{row.note}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <p class="empty-search" id="emptySearch" hidden>No docs cards match that filter.</p>
+          </section>
+        ) : Content ? (
+          <article class="doc-article">
+            <nav class="breadcrumbs" aria-label="Breadcrumb"><a href={`${docsBase}/`}>Docs hub</a><span>/</span><span>{SLUG_LABEL[requestedKey]}</span></nav>
+            <Content />
+            <nav class="pager" aria-label="Documentation pagination">
+              {prevSlug ? <a href={docsHref(prevSlug)}>← {SLUG_LABEL[prevSlug]}</a> : <span></span>}
+              {nextSlug ? <a href={docsHref(nextSlug)}>{SLUG_LABEL[nextSlug]} →</a> : <span></span>}
+            </nav>
+          </article>
+        ) : (
+          <section class="doc-article"><h1>Document not found</h1><p>The requested docs page does not exist.</p></section>
+        )}
+      </main>
+    </div>
+  </div>
+
+  <script is:inline define:vars={{ isRoot }}>
+    window.__isRoot = isRoot;
+  </script>
+
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const menuToggle = document.getElementById('menuToggle');
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      const navItems = document.querySelectorAll('.nav-item');
+
+      function toggleMenu(force) {
+        const isOpen = typeof force === 'boolean' ? force : !sidebar.classList.contains('open');
+        sidebar.classList.toggle('open', isOpen);
+        overlay.classList.toggle('open', isOpen);
+        if (menuToggle) menuToggle.setAttribute('aria-expanded', String(isOpen));
+      }
+
+      if (menuToggle) menuToggle.addEventListener('click', () => toggleMenu());
+      if (overlay) overlay.addEventListener('click', () => toggleMenu(false));
+      navItems.forEach(item => item.addEventListener('click', () => {
+        if (window.innerWidth <= 820) toggleMenu(false);
+      }));
+
+      const searchInput = document.getElementById('searchInput');
+      const cards = Array.from(document.querySelectorAll('[data-search-card]'));
+      const emptySearch = document.getElementById('emptySearch');
+      if (searchInput && cards.length) {
+        searchInput.addEventListener('input', (e) => {
+          const query = e.target.value.toLowerCase();
+          let visible = 0;
+          cards.forEach(card => {
+            const match = !query || (card.textContent || '').toLowerCase().includes(query);
+            card.classList.toggle('hidden-section', !match);
+            if (match) visible += 1;
+          });
+          if (emptySearch) emptySearch.hidden = visible !== 0;
+        });
+      }
+    });
+  </script>
+</BaseLayout>

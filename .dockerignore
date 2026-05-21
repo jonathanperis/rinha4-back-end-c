@@ -1,0 +1,13 @@
+.git
+.github
+.opencode/node_modules
+.cache
+.tmp
+build
+benchmark-results*
+docs/public/reports
+docs/out
+docs/node_modules
+resources/references.json.gz
+*.o
+*.bin

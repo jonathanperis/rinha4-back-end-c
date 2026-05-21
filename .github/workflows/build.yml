@@ -1,0 +1,233 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - '.github/workflows/pages.yml'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      rinha_index_v2:
+        description: Build an explicit env-gated v2 k-means/block16 index image
+        required: true
+        default: "0"
+      rinha_index_kd_tree:
+        description: Build an explicit env-gated KD-tree/block8 index image
+        required: true
+        default: "1"
+      rinha_kd_leaf_size:
+        description: KD-tree leaf size for Docker index build
+        required: true
+        default: "192"
+      rinha_ivf_lists:
+        description: IVF list count for Docker index build
+        required: true
+        default: "4096"
+      rinha_kmeans_train:
+        description: v2 k-means training sample count
+        required: true
+        default: "131072"
+      rinha_kmeans_iters:
+        description: v2 k-means iteration count
+        required: true
+        default: "3"
+      rinha_kmeans_window:
+        description: v2 k-means nearest-centroid search window
+        required: true
+        default: "64"
+      image_tag_suffix:
+        description: Optional suffix for ci-${sha}, e.g. -v2
+        required: false
+        default: ""
+      benchmark_report_kind:
+        description: Report lane
+        required: true
+        default: candidate
+        type: choice
+        options:
+          - candidate
+          - experiment
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build-amd64:
+    name: Build amd64
+    runs-on: ubuntu-latest
+    outputs:
+      benchmark_image: ${{ steps.benchmark-image.outputs.image }}
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Semantic Version
+        id: semver
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, '[skip-release]')
+        run: |
+          latest=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          latest=${latest#v}
+          IFS='.' read -r major minor patch <<< "$latest"
+          new_patch=$((patch + 1))
+          version="v${major}.${minor}.${new_patch}"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Version: $version"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Log in to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest,enable=${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+            type=raw,value=${{ steps.semver.outputs.version }},enable=${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.semver.outputs.version != '' }}
+            type=raw,value=ci-${{ github.sha }}${{ github.event_name == 'workflow_dispatch' && inputs.image_tag_suffix || '' }},enable=${{ github.event_name != 'pull_request' }}
+            type=sha
+
+      - name: Build and push amd64
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            RINHA_INDEX_V2=${{ github.event_name == 'workflow_dispatch' && inputs.rinha_index_v2 || '0' }}
+            RINHA_INDEX_KD_TREE=${{ github.event_name == 'workflow_dispatch' && inputs.rinha_index_kd_tree || '1' }}
+            RINHA_KD_LEAF_SIZE=${{ github.event_name == 'workflow_dispatch' && inputs.rinha_kd_leaf_size || '192' }}
+            RINHA_IVF_LISTS=${{ github.event_name == 'workflow_dispatch' && inputs.rinha_ivf_lists || '4096' }}
+            RINHA_KMEANS_TRAIN=${{ github.event_name == 'workflow_dispatch' && inputs.rinha_kmeans_train || '131072' }}
+            RINHA_KMEANS_ITERS=${{ github.event_name == 'workflow_dispatch' && inputs.rinha_kmeans_iters || '3' }}
+            RINHA_KMEANS_WINDOW=${{ github.event_name == 'workflow_dispatch' && inputs.rinha_kmeans_window || '64' }}
+
+      - name: Set benchmark image
+        id: benchmark-image
+        run: echo "image=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:ci-${{ github.sha }}${{ github.event_name == 'workflow_dispatch' && inputs.image_tag_suffix || '' }}" >> "$GITHUB_OUTPUT"
+
+      - name: Create Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.semver.outputs.version != ''
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ steps.semver.outputs.version }}
+          name: ${{ steps.semver.outputs.version }}
+          generate_release_notes: true
+
+  benchmark-amd64:
+    name: Benchmark amd64 image
+    runs-on: ubuntu-latest
+    needs: build-amd64
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    timeout-minutes: 45
+    concurrency:
+      group: benchmark-reports-main
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      packages: read
+      actions: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install native k6
+        run: |
+          curl -fsSL https://dl.k6.io/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/k6-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install -y k6
+          k6 version
+
+      - name: Run official-like benchmark
+        env:
+          WEBAPI_IMAGE: ${{ needs.build-amd64.outputs.benchmark_image }}
+          BENCHMARK_PULL_IMAGE: "true"
+          BENCHMARK_NO_BUILD: "true"
+          OFFICIAL_REF: main
+          K6_IMAGE: grafana/k6:latest
+          BENCHMARK_K6_MODE: native
+          RESULTS_DIR: benchmark-results
+        run: bash scripts/ci-official-benchmark.sh
+
+      - name: Archive benchmark report
+        env:
+          RESULTS_JSON: benchmark-results/results.json
+          K6_HTML_REPORT: benchmark-results/k6-report.html
+          BENCHMARK_IMAGE: ${{ needs.build-amd64.outputs.benchmark_image }}
+          BENCHMARK_SHA: ${{ github.sha }}
+          BENCHMARK_RUN_ID: ${{ github.run_id }}
+          BENCHMARK_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          BENCHMARK_TIMESTAMP: ${{ github.event.head_commit.timestamp }}
+          BENCHMARK_REPORT_KIND: ${{ github.event_name == 'workflow_dispatch' && inputs.benchmark_report_kind || 'candidate' }}
+          BENCHMARK_K6_MODE: native
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main
+          bash scripts/archive-benchmark-result.sh
+
+      - name: Commit benchmark report
+        id: commit-benchmark-report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/public/reports
+          if git diff --cached --quiet; then
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "docs: archive rinha benchmark"
+            git push
+            echo "committed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Refresh GitHub Pages
+        if: steps.commit-benchmark-report.outputs.committed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run pages.yml --ref main
+
+      - name: Upload benchmark artifacts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: rinha-benchmark-${{ github.sha }}
+          path: |
+            benchmark-results/results.json
+            benchmark-results/k6-report.html
+            benchmark-results/k6-output-repetition-*.json
+            benchmark-results/results-repetition-*.json
+            benchmark-results/k6-report-repetition-*.html
+            benchmark-results/docker-compose.log
+            benchmark-results/docker-state-*.txt
+          if-no-files-found: ignore

@@ -1,0 +1,136 @@
+name: Official-like Benchmark
+
+on:
+  workflow_dispatch:
+    inputs:
+      official_ref:
+        description: Rinha official repo ref for the pinned EVALUATION/test suite
+        required: true
+        default: 645165cbc88a637c78bd6d5cc07bae4dbe422567
+      k6_image:
+        description: k6 Docker image used when benchmark_k6_mode=docker
+        required: true
+        default: grafana/k6:latest
+      webapi_image:
+        description: Optional prebuilt image; empty means build from checkout
+        required: false
+        default: ""
+      report_kind:
+        description: Report lane
+        required: true
+        default: experiment
+        type: choice
+        options:
+          - experiment
+          - candidate
+      benchmark_repetitions:
+        description: Number of k6 repetitions
+        required: true
+        default: "1"
+      benchmark_k6_mode:
+        description: k6 execution mode
+        required: true
+        default: native
+        type: choice
+        options:
+          - native
+          - docker
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  official-like-benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      actions: write
+      packages: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install native k6
+        run: |
+          curl -fsSL https://dl.k6.io/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/k6-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install -y k6
+          k6 version
+
+      - name: Log in to GHCR
+        if: inputs.webapi_image != ''
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run benchmark
+        env:
+          OFFICIAL_REF: ${{ inputs.official_ref }}
+          K6_IMAGE: ${{ inputs.k6_image }}
+          BENCHMARK_K6_MODE: ${{ inputs.benchmark_k6_mode }}
+          WEBAPI_IMAGE: ${{ inputs.webapi_image }}
+          BENCHMARK_PULL_IMAGE: ${{ inputs.webapi_image != '' && 'true' || 'false' }}
+          BENCHMARK_NO_BUILD: ${{ inputs.webapi_image != '' && 'true' || 'false' }}
+          BENCHMARK_REPETITIONS: ${{ inputs.benchmark_repetitions }}
+          RESULTS_DIR: benchmark-results
+        run: bash scripts/ci-official-benchmark.sh
+
+      - name: Archive benchmark report
+        id: archive-benchmark-report
+        env:
+          RESULTS_JSON: benchmark-results/results.json
+          K6_HTML_REPORT: benchmark-results/k6-report.html
+          BENCHMARK_IMAGE: ${{ inputs.webapi_image }}
+          BENCHMARK_SHA: ${{ github.sha }}
+          BENCHMARK_RUN_ID: ${{ github.run_id }}
+          BENCHMARK_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          BENCHMARK_REPORT_KIND: ${{ inputs.report_kind }}
+          BENCHMARK_K6_MODE: ${{ inputs.benchmark_k6_mode }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main
+          bash scripts/archive-benchmark-result.sh
+          echo "archived=true" >> "$GITHUB_OUTPUT"
+
+      - name: Commit benchmark report
+        id: commit-benchmark-report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/public/reports
+          if git diff --cached --quiet; then
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "docs: archive rinha benchmark"
+            git push
+            echo "committed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Refresh GitHub Pages
+        if: steps.commit-benchmark-report.outputs.committed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run pages.yml --ref main
+
+      - name: Upload benchmark artifacts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: rinha-benchmark-results-${{ github.run_number }}
+          path: |
+            benchmark-results/results.json
+            benchmark-results/k6-report.html
+            benchmark-results/k6-output-repetition-*.json
+            benchmark-results/results-repetition-*.json
+            benchmark-results/k6-report-repetition-*.html
+            benchmark-results/docker-compose.log
+            benchmark-results/docker-state-*.txt
+          if-no-files-found: ignore

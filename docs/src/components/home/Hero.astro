@@ -1,0 +1,60 @@
+---
+const official = await import('../../../public/official/latest.json');
+const latest = await import('../../../public/reports/latest-candidate.json');
+const officialResult = official.default.result;
+const officialIssue = official.default.issue;
+const officialRuntime = official.default.runtime_info;
+const latestResult = latest.default.result;
+const latestMeta = latest.default.metadata;
+const officialScore = Number(officialResult.scoring.final_score).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const ciScore = Number(latestResult.scoring.final_score).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-content">
+    <p class="eyebrow">RINHA 2026 // PURE C // OFFICIAL ISSUE #{officialIssue.number}</p>
+    <h1 id="hero-title">0% FAILURES.<br />FD PASSED.<br />FRAUD SCORED.</h1>
+    <p class="tagline">
+      Pure C fraud scoring under the official {officialRuntime.cpu} CPU / {officialRuntime.mem} MB envelope. The page now leads with verifiable result evidence, then opens the hot path.
+    </p>
+
+    <dl class="proof-rail" aria-label="Official benchmark proof">
+      <div>
+        <dt>official.p99</dt>
+        <dd>{officialResult.p99}</dd>
+      </div>
+      <div>
+        <dt>failures</dt>
+        <dd>{officialResult.scoring.failure_rate}</dd>
+      </div>
+      <div>
+        <dt>score</dt>
+        <dd>{officialScore}</dd>
+      </div>
+      <div>
+        <dt>budget</dt>
+        <dd>{officialRuntime.cpu} CPU / {officialRuntime.mem} MB</dd>
+      </div>
+    </dl>
+
+    <div class="cta-group">
+      <a href={officialIssue.url} class="btn-fire" target="_blank" rel="noopener noreferrer">VERIFY OFFICIAL ISSUE</a>
+      <a href="./docs/" class="btn-secondary">TRACE THE HOT PATH</a>
+      <a href="./reports/" class="btn-quiet">REPORT HISTORY</a>
+    </div>
+  </div>
+
+  <aside class="terminal-panel" aria-label="Benchmark proof transcript">
+    <div class="terminal-content">
+      <div class="term-line term-muted">$ docker pull {latestMeta.image}</div>
+      <div class="term-line">official.issue       = #{officialIssue.number}</div>
+      <div class="term-line">official.p99         = {officialResult.p99}</div>
+      <div class="term-line">official.failures    = {officialResult.scoring.failure_rate}</div>
+      <div class="term-line">official.score       = {officialScore}</div>
+      <div class="term-line term-muted">ci.candidate.p99     = {latestResult.p99}</div>
+      <div class="term-line term-muted">ci.candidate.score   = {ciScore}</div>
+      <div class="term-line term-danger">transport            = SCM_RIGHTS / SOCK_SEQPACKET</div>
+      <div class="term-line">status               = evidence-linked<span class="cursor" aria-hidden="true"></span></div>
+    </div>
+  </aside>
+</section>

@@ -1,0 +1,134 @@
+{
+  "synced_at": "2026-05-17T02:52:27.332Z",
+  "source": {
+    "repo": "zanfranceschi/rinha-de-backend-2026",
+    "author": "jonathanperis",
+    "search": "reason:completed rinha/test",
+    "target_repo_url": "https://github.com/jonathanperis/rinha4-back-end-c"
+  },
+  "issue": {
+    "number": 4545,
+    "title": "rinha/test jonathanperis-c",
+    "url": "https://github.com/zanfranceschi/rinha-de-backend-2026/issues/4545",
+    "updated_at": "2026-05-15T14:12:01Z",
+    "closed_at": "2026-05-15T14:12:01Z"
+  },
+  "comment": {
+    "url": "https://github.com/zanfranceschi/rinha-de-backend-2026/issues/4545#issuecomment-4460500320",
+    "created_at": "2026-05-15T14:12:01Z",
+    "author": "arinhadebackend"
+  },
+  "repo_url": "https://github.com/jonathanperis/rinha4-back-end-c",
+  "result": {
+    "expected": {
+      "total": 54100,
+      "fraud_count": 24058,
+      "legit_count": 30042,
+      "fraud_rate": 0.4447,
+      "legit_rate": 0.5553,
+      "edge_case_count": 797,
+      "edge_case_rate": 0.0147
+    },
+    "p99": "1.44ms",
+    "scoring": {
+      "breakdown": {
+        "false_positive_detections": 0,
+        "false_negative_detections": 0,
+        "true_positive_detections": 24037,
+        "true_negative_detections": 30022,
+        "http_errors": 0
+      },
+      "failure_rate": "0%",
+      "weighted_errors_E": 0,
+      "error_rate_epsilon": 0,
+      "p99_score": {
+        "value": 2843.05,
+        "cut_triggered": false
+      },
+      "detection_score": {
+        "value": 3000,
+        "rate_component": 3000,
+        "absolute_penalty": 0,
+        "cut_triggered": false
+      },
+      "final_score": 5843.05
+    }
+  },
+  "runtime_info": {
+    "mem": 350,
+    "cpu": 1,
+    "images": {
+      "ghcr.io/jonathanperis/rinha4-lb-yolo-mode:ci-019a1f02e8b840db5ae6391a8df31ec8874e0c84": [
+        {
+          "Name": "/submission-lb-1",
+          "Platform": "linux",
+          "Image": "ghcr.io/jonathanperis/rinha4-lb-yolo-mode:ci-019a1f02e8b840db5ae6391a8df31ec8874e0c84",
+          "Service": "lb",
+          "HostConfig": {
+            "NetworkMode": "submission_rinha",
+            "Memory": 31457280,
+            "NanoCpus": 80000000,
+            "IpcMode": "private",
+            "Binds": [
+              "<redacted>/submission_sockets:/run/rinha:rw"
+            ],
+            "PidMode": "",
+            "CapAdd": null,
+            "PortBindings": {
+              "tcp": [
+                {
+                  "HostIp": "",
+                  "HostPort": "9999"
+                }
+              ]
+            },
+            "Privileged": false
+          }
+        }
+      ],
+      "ghcr.io/jonathanperis/rinha4-back-end-c:ci-5175f6ec242a2567ec373cfac387caabc3c6f529": [
+        {
+          "Name": "/submission-api2-1",
+          "Platform": "linux",
+          "Image": "ghcr.io/jonathanperis/rinha4-back-end-c:ci-5175f6ec242a2567ec373cfac387caabc3c6f529",
+          "Service": "api2",
+          "HostConfig": {
+            "NetworkMode": "submission_rinha",
+            "Memory": 167772160,
+            "NanoCpus": 460000000,
+            "IpcMode": "private",
+            "Binds": [
+              "<redacted>/submission_sockets:/run/rinha:rw"
+            ],
+            "PidMode": "",
+            "CapAdd": null,
+            "PortBindings": {},
+            "Privileged": false
+          }
+        },
+        {
+          "Name": "/submission-api1-1",
+          "Platform": "linux",
+          "Image": "ghcr.io/jonathanperis/rinha4-back-end-c:ci-5175f6ec242a2567ec373cfac387caabc3c6f529",
+          "Service": "api1",
+          "HostConfig": {
+            "NetworkMode": "submission_rinha",
+            "Memory": 167772160,
+            "NanoCpus": 460000000,
+            "IpcMode": "private",
+            "Binds": [
+              "<redacted>/submission_sockets:/run/rinha:rw"
+            ],
+            "PidMode": "",
+            "CapAdd": null,
+            "PortBindings": {},
+            "Privileged": false
+          }
+        }
+      ]
+    },
+    "instances-number-ok?": true,
+    "unlimited-services": null,
+    "commit": "5100631"
+  }
+}

@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  c-tests:
+    name: C tests and build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install C deps
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends build-essential zlib1g-dev
+
+      - name: Unit tests
+        run: make test
+
+      - name: Build binaries
+        run: make clean all
+
+      - name: Docker Compose config
+        run: docker compose config --quiet
+
+  docs:
+    name: Docs build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Install docs deps
+        working-directory: docs
+        run: bun install --frozen-lockfile
+
+      - name: Build docs
+        working-directory: docs
+        env:
+          NODE_ENV: production
+          PUBLIC_GA_ID: G-JVGK9VRX1V
+        run: bun run build

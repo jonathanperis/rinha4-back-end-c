@@ -1,0 +1,11 @@
+build/
+.cache/
+.tmp/
+benchmark-results*/
+docs/out/
+docs/node_modules/
+docs/.astro/
+resources/*.bin
+resources/references.json.gz
+*.o
+*.dSYM/

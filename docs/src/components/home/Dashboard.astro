@@ -1,0 +1,145 @@
+---
+const official = await import('../../../public/official/latest.json');
+const latest = await import('../../../public/reports/latest-candidate.json');
+const index = await import('../../../public/reports/index.json');
+const officialResult = official.default.result;
+const officialIssue = official.default.issue;
+const officialComment = official.default.comment;
+const officialSource = official.default.source;
+const officialRuntime = official.default.runtime_info;
+const result = latest.default.result;
+const metadata = latest.default.metadata;
+const runs = index.default;
+const candidates = runs.filter((run) => run.report_kind === 'candidate');
+const experiments = runs.filter((run) => run.report_kind === 'experiment');
+const officialScore = Number(officialResult.scoring.final_score).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const officialClosedAt = new Intl.DateTimeFormat('en-US', {
+  dateStyle: 'medium',
+  timeStyle: 'short',
+  timeZone: 'UTC',
+}).format(new Date(officialIssue.closed_at));
+const score = Number(result.scoring.final_score).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+const p99Score = Number(result.scoring.p99_score.value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const detectionScore = Number(result.scoring.detection_score.value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const candidateCount = candidates.length;
+const cleanCandidateCount = candidates.filter((run) => run.failure_rate === '0%' && run.false_positive_detections === 0 && run.false_negative_detections === 0 && run.http_errors === 0).length;
+const latestReportPath = metadata.html_report ? `./reports/${metadata.html_report}` : './reports/';
+---
+
+<section class="official-strip proof-source" aria-labelledby="official-source-title">
+  <div>
+    <span class="official-kicker">official source</span>
+    <h2 id="official-source-title">Verified upstream result, not a decorative counter.</h2>
+    <p>Latest closed completed upstream issue authored by <code>{officialSource.author}</code> whose result JSON matches <code>{officialSource.target_repo_url ?? official.default.repo_url}</code>. Synced from <code>{officialSource.repo}</code> and closed {officialClosedAt} UTC.</p>
+  </div>
+  <div class="official-links">
+    <a href={officialIssue.url} target="_blank" rel="noopener noreferrer">Issue #{officialIssue.number}</a>
+    <a href={officialComment.url} target="_blank" rel="noopener noreferrer">Result comment</a>
+    <a href="https://rinhadebackend.com.br/" target="_blank" rel="noopener noreferrer">Ranking</a>
+  </div>
+</section>
+
+<section class="evidence-ledger" aria-labelledby="evidence-ledger-title">
+  <div class="section-heading">
+    <span class="eyebrow">PROOF LEDGER</span>
+    <h2 id="evidence-ledger-title">Official proof first, CI signal second.</h2>
+    <p>Numbers stay split by provenance so the page does not mix public Rinha evidence with local candidate tracking.</p>
+  </div>
+
+  <dl class="ledger-grid">
+    <div class="ledger-row official">
+      <dt>official.p99</dt>
+      <dd>{officialResult.p99}</dd>
+      <span>Rinha runner, issue #{officialIssue.number}</span>
+    </div>
+    <div class="ledger-row danger">
+      <dt>official.failures</dt>
+      <dd>{officialResult.scoring.failure_rate}</dd>
+      <span>0 FP, 0 FN, 0 HTTP errors</span>
+    </div>
+    <div class="ledger-row warning">
+      <dt>official.score</dt>
+      <dd>{officialScore}</dd>
+      <span>p99 {Number(officialResult.scoring.p99_score.value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} plus detection 3,000</span>
+    </div>
+    <div class="ledger-row">
+      <dt>resource.envelope</dt>
+      <dd>{officialRuntime.cpu} CPU / {officialRuntime.mem} MB</dd>
+      <span>LB plus two API containers</span>
+    </div>
+  </dl>
+</section>
+
+<section class="cutaway" aria-labelledby="cutaway-title">
+  <div class="section-heading compact">
+    <span class="eyebrow">SYSTEM CUTAWAY</span>
+    <h2 id="cutaway-title">TCP in. FD passed. C writes back.</h2>
+  </div>
+
+  <div class="cutaway-grid">
+    <pre class="ascii-map"><code>k6 / judge
+    |
+    v
+rinha4-lb-yolo-mode :9999
+    | SCM_RIGHTS over SOCK_SEQPACKET
+    +--> api1.sock -> C epoll loop -> client fd
+    |
+    +--> api2.sock -> C epoll loop -> client fd</code></pre>
+
+    <div class="path-stack">
+      <article>
+        <span>01</span>
+        <h3>Transport stays out of the classifier.</h3>
+        <p>The yolo LB accepts on port 9999 and passes accepted descriptors to the two C API processes. Fraud payloads stay in the API path.</p>
+      </article>
+      <article>
+        <span>02</span>
+        <h3>The API parses only what the workload needs.</h3>
+        <p>Manual HTTP and JSON extraction produce the 14-dimensional fraud vector without framework overhead.</p>
+      </article>
+      <article>
+        <span>03</span>
+        <h3>The index answers with prebuilt response bytes.</h3>
+        <p>A mmaped int16 IVF/block index returns the fraud label count, then the server writes one prepared HTTP response.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="stress-tests" aria-labelledby="ci-stream-title">
+  <span class="eyebrow">CI BENCHMARK STREAM</span>
+  <h2 id="ci-stream-title">Candidate telemetry with report links attached.</h2>
+  <p class="stress-intro">
+    CI candidate metrics are local evidence for regression tracking. The latest candidate uses the canonical fd-pass compose layout and keeps the candidate pointer separate from experiments.
+  </p>
+
+  <div class="stress-metrics">
+    <div class="stress-metric">
+      <span class="metric-value">{result.p99}</span>
+      <span class="metric-label">latest CI p99</span>
+    </div>
+    <div class="stress-metric">
+      <span class="metric-value">{result.scoring.failure_rate}</span>
+      <span class="metric-label">latest CI failures</span>
+    </div>
+    <div class="stress-metric">
+      <span class="metric-value">{score}</span>
+      <span class="metric-label">latest CI score</span>
+    </div>
+    <div class="stress-metric">
+      <span class="metric-value">{cleanCandidateCount}/{candidateCount}</span>
+      <span class="metric-label">clean candidates archived</span>
+    </div>
+    <div class="stress-metric">
+      <span class="metric-value">{experiments.length}</span>
+      <span class="metric-label">experiments separated</span>
+    </div>
+  </div>
+
+  <div class="stress-links">
+    <a href="./reports/" class="stress-link">View report history</a>
+    <a href={latestReportPath} class="stress-link">Latest HTML report</a>
+    <a href={metadata.run_url} class="stress-link" target="_blank" rel="noopener noreferrer">Latest CI run</a>
+    <span class="stress-link ghost">p99 score {p99Score} // detection {detectionScore}</span>
+  </div>
+</section>

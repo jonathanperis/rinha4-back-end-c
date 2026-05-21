@@ -1,0 +1,47 @@
+{
+  "metadata": {
+    "timestamp": "2026-05-13T19:12:45-03:00",
+    "sha": "b6bb510667e92384eb8f87b539ea558e49e33e36",
+    "short_sha": "b6bb510667e9",
+    "run_id": "25829454249",
+    "run_url": "https://github.com/jonathanperis/rinha4-back-end-c/actions/runs/25829454249",
+    "image": "ghcr.io/jonathanperis/rinha4-back-end-c:ci-b6bb510667e92384eb8f87b539ea558e49e33e36",
+    "report_kind": "candidate",
+    "html_report": "rinha-benchmark-20260513221627-b6bb510667e9.html"
+  },
+  "result": {
+    "expected": {
+      "total": 54100,
+      "fraud_count": 24058,
+      "legit_count": 30042,
+      "fraud_rate": 0.4447,
+      "legit_rate": 0.5553,
+      "edge_case_count": 797,
+      "edge_case_rate": 0.0147
+    },
+    "p99": "0.91ms",
+    "scoring": {
+      "breakdown": {
+        "false_positive_detections": 16,
+        "false_negative_detections": 16,
+        "true_positive_detections": 24021,
+        "true_negative_detections": 30006,
+        "http_errors": 0
+      },
+      "failure_rate": "0.06%",
+      "weighted_errors_E": 64,
+      "error_rate_epsilon": 0.001184,
+      "p99_score": {
+        "value": 3000,
+        "cut_triggered": false
+      },
+      "detection_score": {
+        "value": 2382.81,
+        "rate_component": 2926.69,
+        "absolute_penalty": -543.87,
+        "cut_triggered": false
+      },
+      "final_score": 5382.81
+    }
+  }
+}

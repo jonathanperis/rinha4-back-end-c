@@ -1,0 +1,87 @@
+---
+import '../styles/globals.css';
+import Analytics from '../components/Analytics.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'rinha4-back-end-c | FRAUD SIGNAL IN C',
+  description = 'Pure C implementation for Rinha de Backend 2026 with official and CI benchmark history.'
+} = Astro.props;
+
+const pageUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : `https://jonathanperis.github.io${Astro.url.pathname}`;
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const base = baseUrl.replace(/\/$/, '');
+const asset = (path: string) => `${base}${path}`;
+const absoluteAsset = (path: string) => Astro.site
+  ? new URL(`${baseUrl}${path.replace(/^\//, '')}`, Astro.site).href
+  : `https://jonathanperis.github.io${asset(path)}`;
+
+const faviconIcoUrl = asset('/favicon.ico');
+const faviconPngUrl = asset('/favicon.png');
+const favicon32Url = asset('/favicon-32x32.png');
+const appleTouchIconUrl = asset('/apple-touch-icon.png');
+const titleMarkUrl = asset('/title-mark.svg');
+const socialPreviewUrl = absoluteAsset('/social-preview.png');
+const socialPreviewAlt = 'CRT-style rinha4-back-end-c benchmark console with KD-tree Block8 and clean 0 FP / 0 FN score badges.';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareSourceCode',
+  name: 'rinha4-back-end-c',
+  description,
+  url: pageUrl,
+  image: socialPreviewUrl,
+  thumbnailUrl: socialPreviewUrl,
+  codeRepository: 'https://github.com/jonathanperis/rinha4-back-end-c',
+  programmingLanguage: 'C',
+  runtimePlatform: 'Linux / Docker',
+  license: 'https://github.com/jonathanperis/rinha4-back-end-c/blob/main/LICENSE',
+  author: { '@type': 'Person', name: 'Jonathan Peris', url: 'https://github.com/jonathanperis' }
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="icon" href={faviconIcoUrl} sizes="any" />
+    <link rel="icon" type="image/svg+xml" href={titleMarkUrl} />
+    <link rel="icon" type="image/png" href={faviconPngUrl} />
+    <link rel="icon" type="image/png" sizes="32x32" href={favicon32Url} />
+    <link rel="apple-touch-icon" href={appleTouchIconUrl} />
+    <meta name="description" content={description} />
+    <meta name="keywords" content="Rinha de Backend, C, fraud detection, k6, performance, benchmark" />
+    <link rel="canonical" href={pageUrl} />
+    <meta name="theme-color" content="#555555" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:site_name" content="rinha4-back-end-c" />
+    <meta property="og:image" content={socialPreviewUrl} />
+    <meta property="og:image:secure_url" content={socialPreviewUrl} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={socialPreviewAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialPreviewUrl} />
+    <meta name="twitter:image:alt" content={socialPreviewAlt} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <Analytics />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
