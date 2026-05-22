@@ -1,6 +1,6 @@
 CC ?= cc
 BUILD_DIR := build
-COMMON_SRC := src/common/correction.c src/common/distance.c src/common/fdpass.c src/common/http.c src/common/index.c src/common/net.c src/common/search.c src/common/vectorize.c
+COMMON_SRC := src/common/distance.c src/common/fdpass.c src/common/http.c src/common/index.c src/common/net.c src/common/search.c src/common/vectorize.c
 CFLAGS_WARN := -Wall -Wextra -Wshadow -Werror -I src
 CFLAGS_ARCH ?=
 CFLAGS_COMMON := -std=c11 -O3 -DNDEBUG $(CFLAGS_ARCH) $(CFLAGS_WARN)
@@ -23,9 +23,6 @@ $(BUILD_DIR)/api: src/api/main.c $(COMMON_SRC) | $(BUILD_DIR)
 
 $(BUILD_DIR)/build-index: src/preprocess/build_index.c src/common/distance.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS_COMMON) $^ -o $@ -lz
-
-$(BUILD_DIR)/test_correction: tests/test_correction.c src/common/correction.c | $(BUILD_DIR)
-	$(CC) $(CFLAGS_TEST) $^ -o $@ $(LDFLAGS_COMMON)
 
 $(BUILD_DIR)/test_http: tests/test_http.c src/common/http.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS_TEST) $^ -o $@ $(LDFLAGS_COMMON)
@@ -53,8 +50,7 @@ $(BUILD_DIR)/test_api_fdpass_immediate: tests/test_api_fdpass_immediate.c src/ap
 $(BUILD_DIR)/test_api_fdpass_assume_flags: tests/test_api_fdpass_immediate.c src/api/main.c $(COMMON_SRC) | $(BUILD_DIR)
 	$(CC) $(CFLAGS_TEST) -DRINHA_ASSUME_PASSED_FD_FLAGS tests/test_api_fdpass_immediate.c $(COMMON_SRC) -o $@ $(LDFLAGS_COMMON)
 
-test: $(BUILD_DIR)/test_correction $(BUILD_DIR)/test_http $(BUILD_DIR)/test_vectorize $(BUILD_DIR)/test_search $(BUILD_DIR)/test_fdpass $(BUILD_DIR)/test_api_fdpass_immediate
-	./$(BUILD_DIR)/test_correction
+test: $(BUILD_DIR)/test_http $(BUILD_DIR)/test_vectorize $(BUILD_DIR)/test_search $(BUILD_DIR)/test_fdpass $(BUILD_DIR)/test_api_fdpass_immediate
 	./$(BUILD_DIR)/test_http
 	./$(BUILD_DIR)/test_vectorize
 	./$(BUILD_DIR)/test_search
