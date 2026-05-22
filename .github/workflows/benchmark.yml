@@ -18,8 +18,8 @@ on:
           - competitor-compose/c-c-lb/docker-compose.yml
           - competitor-compose/c-asm-lb/docker-compose.yml
           - competitor-compose/itagyba-dotnet/docker-compose.yml
-          - competitor-compose/silent-index/docker-compose.yml
           - competitor-compose/rinha-2026-rust/docker-compose.yml
+          - competitor-compose/silent-index/docker-compose.yml
       official_ref:
         description: Rinha official repo ref for the pinned EVALUATION/test suite
         required: true
@@ -69,10 +69,10 @@ jobs:
             compose_file: competitor-compose/c-asm-lb/docker-compose.yml
           - name: itagyba-dotnet
             compose_file: competitor-compose/itagyba-dotnet/docker-compose.yml
-          - name: silent-index
-            compose_file: competitor-compose/silent-index/docker-compose.yml
           - name: rinha-2026-rust
             compose_file: competitor-compose/rinha-2026-rust/docker-compose.yml
+          - name: silent-index
+            compose_file: competitor-compose/silent-index/docker-compose.yml
 
     permissions:
       contents: read
@@ -313,8 +313,8 @@ jobs:
           run_participant "c-c-lb" "competitor-compose/c-c-lb/docker-compose.yml"
           run_participant "c-asm-lb" "competitor-compose/c-asm-lb/docker-compose.yml"
           run_participant "itagyba-dotnet" "competitor-compose/itagyba-dotnet/docker-compose.yml"
-          run_participant "silent-index" "competitor-compose/silent-index/docker-compose.yml"
           run_participant "rinha-2026-rust" "competitor-compose/rinha-2026-rust/docker-compose.yml"
+          run_participant "silent-index" "competitor-compose/silent-index/docker-compose.yml"
 
       - name: Upload sequential benchmark artifacts
         if: ${{ always() }}
