@@ -314,7 +314,7 @@ int rinha_index_load(const char *path, rinha_index_t *index) {
     if (has_profile_fastpath) {
         index->profile_counts = (const uint16_t *)((const uint8_t *)index->raw + profile_counts_offset);
         index->profile_masks = (const uint8_t *)index->raw + profile_masks_offset;
-        index->profile_fastpath = env_bool("BUCKET_PROFILE_FASTPATH", 1U);
+        index->profile_fastpath = env_bool("BUCKET_PROFILE_FASTPATH", 0U);
         index->profile_legit_min_count = env_u32("BUCKET_PROFILE_LEGIT_MIN_COUNT", 1000U, 1U, UINT16_MAX);
         index->profile_fraud_min_count = env_u32("BUCKET_PROFILE_FRAUD_MIN_COUNT", 1000U, 1U, UINT16_MAX);
     }
@@ -323,7 +323,7 @@ int rinha_index_load(const char *path, rinha_index_t *index) {
         index->reference_fastpath1 = (const uint8_t *)index->raw + reference_fastpath1_offset;
         index->reference_fastpath2_edges = (const int16_t *)((const uint8_t *)index->raw + reference_fastpath2_edges_offset);
         index->reference_fastpath2 = (const uint8_t *)index->raw + reference_fastpath2_offset;
-        index->reference_fastpath = env_bool("BUCKET_REFERENCE_FASTPATH", 1U);
+        index->reference_fastpath = env_bool("BUCKET_REFERENCE_FASTPATH", 0U);
         index->reference_fastpath_legit = env_bool("BUCKET_REFERENCE_FASTPATH_LEGIT", 0U);
         index->reference_fastpath_fraud = env_bool("BUCKET_REFERENCE_FASTPATH_FRAUD", 1U);
         index->reference_fastpath2_legit = env_bool("BUCKET_REFERENCE_FASTPATH2_LEGIT", 0U);
