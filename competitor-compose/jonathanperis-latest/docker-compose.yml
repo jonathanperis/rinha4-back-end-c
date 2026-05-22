@@ -33,7 +33,7 @@ services:
           memory: "30M"
 
   api1:
-    image: "ghcr.io/jonathanperis/rinha4-back-end-c:ci-8b0b21d37c848eb4fa2bf5770f0ecdfaed1926c8"
+    image: "${WEBAPI_IMAGE:-ghcr.io/jonathanperis/rinha4-back-end-c:ci-8b0b21d37c848eb4fa2bf5770f0ecdfaed1926c8}"
     platform: linux/amd64
     pull_policy: always
     command: ["/app/api"]
@@ -75,7 +75,7 @@ services:
           memory: "160M"
 
   api2:
-    image: "ghcr.io/jonathanperis/rinha4-back-end-c:ci-8b0b21d37c848eb4fa2bf5770f0ecdfaed1926c8"
+    image: "${WEBAPI_IMAGE:-ghcr.io/jonathanperis/rinha4-back-end-c:ci-8b0b21d37c848eb4fa2bf5770f0ecdfaed1926c8}"
     platform: linux/amd64
     pull_policy: always
     command: ["/app/api"]
