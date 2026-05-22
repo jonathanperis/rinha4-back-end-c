@@ -1,5 +1,23 @@
 [
   {
+    "file": "rinha-benchmark-20260522031951-c92593837eab.json",
+    "timestamp": "2026-05-22T03:19:51Z",
+    "sha": "c92593837eab286dc6689ca78775747518326c00",
+    "short_sha": "c92593837eab",
+    "run_id": "26266110392",
+    "run_url": "https://github.com/jonathanperis/rinha4-back-end-c/actions/runs/26266110392",
+    "image": "",
+    "report_kind": "candidate",
+    "html_report": null,
+    "benchmark_k6_mode": "native",
+    "p99": "0.36ms",
+    "failure_rate": "0%",
+    "final_score": 6000,
+    "http_errors": 0,
+    "false_positive_detections": 0,
+    "false_negative_detections": 0
+  },
+  {
     "file": "rinha-benchmark-20260522031156-c92593837eab.json",
     "timestamp": "2026-05-22T03:07:37Z",
     "sha": "c92593837eab286dc6689ca78775747518326c00",

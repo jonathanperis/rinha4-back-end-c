@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "timestamp": "2026-05-22T03:07:37Z",
+    "timestamp": "2026-05-22T03:19:51Z",
     "sha": "c92593837eab286dc6689ca78775747518326c00",
     "short_sha": "c92593837eab",
-    "run_id": "26266107672",
-    "run_url": "https://github.com/jonathanperis/rinha4-back-end-c/actions/runs/26266107672",
-    "image": "ghcr.io/jonathanperis/rinha4-back-end-c:ci-c92593837eab286dc6689ca78775747518326c00",
+    "run_id": "26266110392",
+    "run_url": "https://github.com/jonathanperis/rinha4-back-end-c/actions/runs/26266110392",
+    "image": "",
     "report_kind": "candidate",
     "benchmark_k6_mode": "native",
     "html_report": null
@@ -20,13 +20,13 @@
       "edge_case_count": 645,
       "edge_case_rate": 0.0119
     },
-    "p99": "0.51ms",
+    "p99": "0.36ms",
     "scoring": {
       "breakdown": {
         "false_positive_detections": 0,
         "false_negative_detections": 0,
         "true_positive_detections": 23942,
-        "true_negative_detections": 30116,
+        "true_negative_detections": 30117,
         "http_errors": 0
       },
       "failure_rate": "0%",
