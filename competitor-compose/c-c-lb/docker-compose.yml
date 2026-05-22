@@ -1,6 +1,6 @@
 services:
   lb:
-    image: "${LB_C_IMAGE:-ghcr.io/jonathanperis/rinha4-lb-yolo-mode:c-ci-3a76d8925d0bed0088a17c0b3223774221571a0e}"
+    image: "${LB_C_IMAGE:-ghcr.io/jonathanperis/rinha4-lb-yolo-mode:c-ci-0e7bbceed1eb8142dca5f83a449840381b30a785}"
     platform: linux/amd64
     pull_policy: always
     user: root
@@ -33,7 +33,7 @@ services:
           memory: "30M"
 
   api1:
-    image: "ghcr.io/jonathanperis/rinha4-back-end-c:ci-1627848e02cf55e3d5e3b5a21b8a38a4ccdce382"
+    image: "ghcr.io/jonathanperis/rinha4-back-end-c:ci-c92593837eab286dc6689ca78775747518326c00"
     command: ["/app/api"]
     user: root
     environment:
@@ -48,6 +48,8 @@ services:
       INDEX_REPAIR0_WORST_THRESHOLD: "${INDEX_REPAIR0_WORST_THRESHOLD:-4021242}"
       INDEX_REPAIR5_WORST_THRESHOLD: "${INDEX_REPAIR5_WORST_THRESHOLD:-3748534}"
       INDEX_EXACT_FALLBACK: "${INDEX_EXACT_FALLBACK:-1}"
+      BUCKET_PROFILE_FASTPATH: "${BUCKET_PROFILE_FASTPATH:-0}"
+      BUCKET_REFERENCE_FASTPATH: "${BUCKET_REFERENCE_FASTPATH:-0}"
       API_RT_PRIORITY: "${API_RT_PRIORITY:-10}"
       API_RT_MODE: "${API_RT_MODE:-wakeup}"
       API_MLOCKALL: "${API_MLOCKALL:-1}"
@@ -75,7 +77,7 @@ services:
           memory: "160M"
 
   api2:
-    image: "ghcr.io/jonathanperis/rinha4-back-end-c:ci-1627848e02cf55e3d5e3b5a21b8a38a4ccdce382"
+    image: "ghcr.io/jonathanperis/rinha4-back-end-c:ci-c92593837eab286dc6689ca78775747518326c00"
     command: ["/app/api"]
     user: root
     environment:
@@ -90,6 +92,8 @@ services:
       INDEX_REPAIR0_WORST_THRESHOLD: "${INDEX_REPAIR0_WORST_THRESHOLD:-4021242}"
       INDEX_REPAIR5_WORST_THRESHOLD: "${INDEX_REPAIR5_WORST_THRESHOLD:-3748534}"
       INDEX_EXACT_FALLBACK: "${INDEX_EXACT_FALLBACK:-1}"
+      BUCKET_PROFILE_FASTPATH: "${BUCKET_PROFILE_FASTPATH:-0}"
+      BUCKET_REFERENCE_FASTPATH: "${BUCKET_REFERENCE_FASTPATH:-0}"
       API_RT_PRIORITY: "${API_RT_PRIORITY:-10}"
       API_RT_MODE: "${API_RT_MODE:-wakeup}"
       API_MLOCKALL: "${API_MLOCKALL:-1}"
