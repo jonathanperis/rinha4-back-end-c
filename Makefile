@@ -7,7 +7,7 @@ CFLAGS_COMMON := -std=c11 -O3 -DNDEBUG $(CFLAGS_ARCH) $(CFLAGS_WARN)
 CFLAGS_TEST := -std=c11 -O0 -g $(CFLAGS_WARN)
 LDFLAGS_COMMON :=
 
-.PHONY: all api preprocess test test-search-stats search-stats-replay test-api-fdpass-immediate test-assume-passed-fd-flags clean docker run
+.PHONY: all api preprocess test test-search-stats search-stats-replay check-correctness test-api-fdpass-immediate test-assume-passed-fd-flags clean docker run
 
 all: api preprocess
 
@@ -39,6 +39,9 @@ $(BUILD_DIR)/test_search_stats: tests/test_search.c src/common/search.c src/comm
 $(BUILD_DIR)/search-stats-replay: tools/search_stats_replay.c $(COMMON_SRC) | $(BUILD_DIR)
 	$(CC) $(CFLAGS_COMMON) -DRINHA_SEARCH_STATS $^ -o $@ -lz $(LDFLAGS_COMMON)
 
+$(BUILD_DIR)/check-correctness: tools/check_correctness.c $(COMMON_SRC) | $(BUILD_DIR)
+	$(CC) $(CFLAGS_COMMON) $^ -o $@ -lz $(LDFLAGS_COMMON)
+
 $(BUILD_DIR)/test_fdpass: tests/test_fdpass.c src/common/fdpass.c src/common/net.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS_TEST) $^ -o $@ $(LDFLAGS_COMMON)
 
@@ -61,6 +64,8 @@ test-search-stats: $(BUILD_DIR)/test_search_stats
 	RINHA_SEARCH_STATS=1 ./$(BUILD_DIR)/test_search_stats
 
 search-stats-replay: $(BUILD_DIR)/search-stats-replay
+
+check-correctness: $(BUILD_DIR)/check-correctness
 
 test-api-fdpass-immediate: $(BUILD_DIR)/test_api_fdpass_immediate
 	./$(BUILD_DIR)/test_api_fdpass_immediate

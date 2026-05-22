@@ -138,9 +138,6 @@ static int is_march_2026(view_t ts) {
 }
 
 static int epoch_minutes_fast(view_t ts) {
-    /* Challenge timestamps live in March 2026. Use the cheap arithmetic path
-       for that dataset and keep the generic civil-date fallback for tests/tools. */
-    if (is_march_2026(ts)) return (two(ts, 8) - 1) * 1440 + two(ts, 11) * 60 + two(ts, 14);
     return epoch_minutes(ts);
 }
 
