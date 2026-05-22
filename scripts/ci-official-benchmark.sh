@@ -9,6 +9,8 @@ RESULTS_DIR="${RESULTS_DIR:-benchmark-results}"
 K6_IMAGE="${K6_IMAGE:-grafana/k6:latest}"
 BENCHMARK_K6_MODE="${BENCHMARK_K6_MODE:-docker}"
 BENCHMARK_REPETITIONS="${BENCHMARK_REPETITIONS:-1}"
+BENCHMARK_PULL_IMAGE="${BENCHMARK_PULL_IMAGE:-true}"
+BENCHMARK_NO_BUILD="${BENCHMARK_NO_BUILD:-false}"
 
 cd "$ROOT_DIR"
 mkdir -p "$RESULTS_DIR"
@@ -52,16 +54,22 @@ cleanup() {
 }
 trap cleanup EXIT
 
-for attempt in {1..3}; do
-    if docker compose "${compose_args[@]}" pull; then
-        break
-    fi
-    if [[ "$attempt" == "3" ]]; then
-        echo "docker compose pull failed after retries" >&2
-        exit 1
-    fi
-    sleep 5
-done
+if [[ "$BENCHMARK_PULL_IMAGE" == "true" ]]; then
+    for attempt in {1..3}; do
+        if docker compose "${compose_args[@]}" pull; then
+            break
+        fi
+        if [[ "$attempt" == "3" ]]; then
+            echo "docker compose pull failed after retries" >&2
+            exit 1
+        fi
+        sleep 5
+    done
+fi
+
+if [[ "$BENCHMARK_NO_BUILD" != "true" ]]; then
+    docker compose "${compose_args[@]}" build
+fi
 
 docker compose "${compose_args[@]}" up -d --no-build --pull never
 capture_docker_state before
