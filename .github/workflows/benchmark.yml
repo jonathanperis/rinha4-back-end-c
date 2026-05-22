@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       official_ref:
-        description: Rinha official repo ref for the pinned EVALUATION/test suite
+        description: Rinha official repo ref for the current EVALUATION/test suite
         required: true
-        default: 645165cbc88a637c78bd6d5cc07bae4dbe422567
+        default: main
       k6_image:
         description: k6 Docker image used when benchmark_k6_mode=docker
         required: true
