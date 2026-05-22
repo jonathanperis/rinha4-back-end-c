@@ -65,6 +65,8 @@ if [[ "$BENCHMARK_PULL_IMAGE" == "true" ]]; then
         fi
         sleep 5
     done
+else
+    docker compose "${compose_args[@]}" pull lb
 fi
 
 if [[ "$BENCHMARK_NO_BUILD" != "true" ]]; then
