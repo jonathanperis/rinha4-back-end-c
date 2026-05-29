@@ -31,14 +31,21 @@ rinha4-lb-yolo-mode :9999
 `src/preprocess` converts the allowed `references.json.gz` dataset into a compact
 binary index during image build.
 
-The production index stores:
+The production image builds its index from the official `references.json.gz` during
+Docker build. Current Docker defaults enable the KD-tree/block8 layout
+(`RINHA_INDEX_KD_TREE=1`, `RINHA_KD_LEAF_SIZE=192`, `RINHA_IVF_LISTS=4096`). The
+builder can still emit the legacy IVF/block8 layout, or the experimental
+k-means/block16 layout when `RINHA_INDEX_V2=1` is used with KD-tree disabled.
+
+The index stores layout-specific sections, but every layout shares the same
+runtime contract:
 
 - metadata and format version
-- trained centroids
-- per-cluster offsets
-- packed int16 vector data
+- packed int16 vectors derived from allowed reference data
 - fraud labels
-- optional block and bound metadata for candidate search experiments
+- lookup/search metadata for the selected layout
+- optional profile/reference fastpath tables
+- optional repair/fallback metadata for correctness-first candidate search
 
 ## Classifier
 

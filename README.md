@@ -10,7 +10,7 @@ Goal: official-valid, low-p99 backend under `1 CPU / 350 MB`, with correctness p
 - two pure C API instances receiving accepted client FDs over Unix control sockets
 - manual HTTP/1 parsing and manual JSON field extraction
 - prebuilt HTTP responses for fraud decisions
-- mmaped binary index built from allowed challenge reference data
+- mmaped binary index built from allowed challenge reference data; Docker builds currently default to the KD-tree/block8 index layout, with legacy IVF/block8 and experimental k-means/block16 still available behind build args
 - GitHub Actions benchmark archive and GitHub Pages report history
 
 ## Contract
@@ -50,6 +50,12 @@ Hot path goals:
 - prebuilt response bytes
 - compact int16 vector/index layout
 - correctness-first repair/fallback around approximate nearest-neighbor search
+
+The Docker image builds its index from the official `references.json.gz` during
+the image build. Current Docker defaults are `RINHA_INDEX_KD_TREE=1`,
+`RINHA_KD_LEAF_SIZE=192`, and `RINHA_IVF_LISTS=4096`. Set
+`RINHA_INDEX_KD_TREE=0` to return to the legacy IVF/block8 builder, or pair that
+with `RINHA_INDEX_V2=1` to build the experimental k-means/block16 layout.
 
 ## Local
 
@@ -105,6 +111,10 @@ GitHub Pages lives under `docs/` and mirrors the structure of the .NET implement
 - `/` home dashboard
 - `/docs/` long-form system notes from `docs/wiki/*.md`
 - `/reports/` CI candidate and experiment benchmark archive from `docs/public/reports/index.json`
+
+The Pages docs include a runtime/build tuning matrix under `/docs/runtime-tuning/`
+so benchmark runs can be traced back to the code-level env vars and workflow
+inputs that produced them.
 
 The C site uses GitHub Linguist's C language color (`#555555`) as its accent.
 

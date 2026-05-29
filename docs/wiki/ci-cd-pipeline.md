@@ -31,7 +31,10 @@ the branch unless Jonathan requests a broader/full-field comparison.
 Manual **Official-like Benchmark** runs can archive experiment reports too. Use
 `report_kind=experiment` for non-default search/runtime parameters so failed or
 alternate runs stay visible in `index.json`/`latest.json` without moving
-`latest-candidate.json`.
+`latest-candidate.json`. The Build and Release dispatch path can also produce
+alternate indexed images through `rinha_index_kd_tree`, `rinha_kd_leaf_size`,
+`rinha_index_v2`, and the k-means inputs; keep non-baseline runs marked as
+`experiment` until they pass the correctness gate.
 
 ## Report files
 

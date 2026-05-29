@@ -34,8 +34,12 @@ Build or rebuild index data without Docker when the reference dataset is present
 ```
 
 Runtime search controls are environment variables in `docker-compose.yml`, such
-as `INDEX_NPROBE`, repair range knobs, and exact fallback controls. Candidate
-changes must pass local tests and CI benchmark correctness before promotion.
+as `INDEX_NPROBE`, repair range knobs, exact fallback controls, index mmap/lock
+hints, and realtime scheduling hints. Index layout is selected at build time by
+Docker args such as `RINHA_INDEX_KD_TREE`, `RINHA_KD_LEAF_SIZE`,
+`RINHA_INDEX_V2`, and `RINHA_IVF_LISTS`. See the Runtime Tuning docs page for the
+full matrix. Candidate changes must pass local tests and CI benchmark correctness
+before promotion.
 
 Run docs locally:
 

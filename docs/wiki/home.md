@@ -9,7 +9,8 @@ The current build is optimized for correctness first and latency second:
 - manual HTTP/1 request parsing
 - manual JSON field extraction
 - prebuilt HTTP responses
-- mmaped binary vector index built from `references.json.gz`
+- mmaped binary vector index built from `references.json.gz` (current Docker default: KD-tree/block8)
+- documented runtime/build tuning knobs for candidate and experiment benchmarks
 - archived CI k6 results after each main build
 - comparison branch against the fastest public competitors
 
