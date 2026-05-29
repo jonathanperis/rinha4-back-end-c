@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "timestamp": "2026-05-22T03:19:51Z",
-    "sha": "c92593837eab286dc6689ca78775747518326c00",
-    "short_sha": "c92593837eab",
-    "run_id": "26266110392",
-    "run_url": "https://github.com/jonathanperis/rinha4-back-end-c/actions/runs/26266110392",
-    "image": "",
+    "timestamp": "2026-05-29T22:51:53Z",
+    "sha": "da4e7b57d0fdd7ef9d79f59f83fc0816304af88a",
+    "short_sha": "da4e7b57d0fd",
+    "run_id": "26666251252",
+    "run_url": "https://github.com/jonathanperis/rinha4-back-end-c/actions/runs/26666251252",
+    "image": "ghcr.io/jonathanperis/rinha4-back-end-c:ci-da4e7b57d0fdd7ef9d79f59f83fc0816304af88a",
     "report_kind": "candidate",
     "benchmark_k6_mode": "native",
     "html_report": null
@@ -26,7 +26,7 @@
         "false_positive_detections": 0,
         "false_negative_detections": 0,
         "true_positive_detections": 23942,
-        "true_negative_detections": 30117,
+        "true_negative_detections": 30116,
         "http_errors": 0
       },
       "failure_rate": "0%",
@@ -42,7 +42,17 @@
         "absolute_penalty": 0,
         "cut_triggered": false
       },
-      "final_score": 6000
+      "final_score": 6000,
+      "raw": {
+        "p99_ms": 0.36184387,
+        "failure_rate": 0,
+        "error_rate_epsilon": 0,
+        "p99_score": 3000,
+        "detection_score": 3000,
+        "rate_component": 3000,
+        "absolute_penalty": 0,
+        "final_score": 6000
+      }
     }
   }
 }
